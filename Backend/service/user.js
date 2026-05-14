@@ -32,3 +32,33 @@ exports.register=async(req,res)=>{
     }
 }
 
+exports.login=async(req,res)=>
+{
+    try{
+        let email=req.body.email;
+        let password=req.body.password;
+        let user=await rec.findOne({email:email});
+        if(!user)
+        {
+            return res.status(400).json({msg: "user does not exist"});
+        }
+        let pass=await bct.compare(password,user.password);
+        if(!pass)
+        {
+            return res.status(400).json({msg: "Invalid credentials"});
+        }
+        return res.status(200).json({
+            msg: "Login successful"
+        });
+
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.status(500).json({
+            error:"Internal Server Error",
+            message:err.message,
+        });
+    }
+
+}
