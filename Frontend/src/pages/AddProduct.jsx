@@ -1,9 +1,10 @@
 import React from 'react'
 
 const AddProduct = () => {
+
   return (
-    <div>
-      
+    <div> 
+      <h1></h1>                  
     </div>
   )
 }
