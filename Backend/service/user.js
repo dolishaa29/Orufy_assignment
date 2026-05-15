@@ -4,13 +4,15 @@ let bct=require("bcrypt");
 
 exports.register=async(req,res)=>{
     try{
+        console.log("req.body",req.body);
         let name=req.body.name;
         let email=req.body.email;
         let password=req.body.password;
         let contact=req.body.contact;
         let address=req.body.address;
-
+      
         let user=await rec.findOne({email:email});
+        console.log("user",user);
         if(user)
         {
             return res.status(400).json({msg: "User already exists"});
@@ -19,7 +21,7 @@ exports.register=async(req,res)=>{
             let hash=await bct.hash(password,10);
             let user=new rec({name:name,email:email,password:hash,contact:contact,address:address});
             await user.save();
-            res.status(201).json({msg: "User registered successfully"});
+            res.status(201).json({msg: "User registered successfully",data:user});
         }
     }
     catch(err)
@@ -43,16 +45,24 @@ exports.login=async(req,res)=>
             return res.status(400).json({msg: "user does not exist"});
         }
         let pass=await bct.compare(password,user.password);
-        if(!pass)
+        if(pass)
         {
-            return res.status(400).json({msg: "Invalid credentials"});
-        }
-        return res.status(200).json({
-            msg: "Login successful"
+           let token=jwt.sign({token:user.email},process.env.JWT_SECRET,{expiresIn:"1h"});
+           res.cookie("token",token,{
+            httpOnly:true,
+            secure: true,
+            sameSite: "none",
         });
-
+        console.log("token",token);
+        res.status(200).json({msg: "Login successful",token:token});
+        }
+        else
+        {
+            return res.status(400).json({msg: "Invalid password"});
+        }
     }
     catch(err)
+
     {
         console.log(err);
         res.status(500).json({

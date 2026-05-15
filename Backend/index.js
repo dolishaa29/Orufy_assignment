@@ -6,7 +6,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 let cors = require('cors');
 let {productx}=require("./dbconnection");
-productx();
 let cookieParser=require('cookie-parser');
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'/public')));
@@ -17,7 +16,7 @@ app.use(cors({
 }));
 
 app.use("/",require("./router/user"));
-app.use("/",require("./router/product"));
+//app.use("/",require("./router/product"));
 
 const PORT=process.env.PORT || 7000;
 app.listen(PORT, () => {
