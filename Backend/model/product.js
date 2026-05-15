@@ -10,3 +10,5 @@ let productmodel=mongo.Schema({
     Exchange:{type:String , enum:['yes','no']},
     Type:{type:String , enum:['published','unpublished']},
 })
+
+module.exports=mongo.model('product',productmodel);
