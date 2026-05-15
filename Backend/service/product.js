@@ -1,5 +1,6 @@
 exports.addproduct=async(req,res)=>
 {
+    
 
 }
 exports.viewproduct=async(req,res)=>
