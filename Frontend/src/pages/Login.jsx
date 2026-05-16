@@ -5,17 +5,22 @@ import { useNavigate, Link } from "react-router-dom"
 
 const Login = () => {
   const navigate = useNavigate()
+
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   })
 
-  const sendData = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    setLoading(true)
-    try {
 
+    setLoading(true)
+    setError("")
+
+    try {
       const response = await axios.post(
         import.meta.env.VITE_API_URL + "/login",
         formData,
@@ -30,19 +35,15 @@ const Login = () => {
         Cookies.set("token", response.data.token, {
           expires: 1
         })
-        alert("Login Successful")
+
         navigate("/dashboard")
       } else {
-        alert(response.data.message || "Invalid Credentials")
+        setError(response.data.message || "Invalid Credentials")
       }
     } catch (err) {
-      console.error(
-        "Login Error:",
-        err.response ? err.response.data : err.message
-      )
-      alert(
+      setError(
         err.response?.data?.message ||
-        "Login Failed! Please try again."
+          "Login Failed! Please try again."
       )
     } finally {
       setLoading(false)
@@ -50,148 +51,109 @@ const Login = () => {
   }
 
   return (
-    <>
-      <style>
-        {`
-          *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-          }
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-pink-100 to-indigo-100 px-4">
 
-          body{
-            font-family:Arial, Helvetica, sans-serif;
-            background:#f4f7fb;
-          }
+      <div className="w-full max-w-6xl h-[620px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row-reverse">
 
-          .login-container{
-            width:100%;
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-          }
+        <div className="hidden md:block w-3/5 h-full relative overflow-hidden">
 
-          .login-box{
-            width:400px;
-            background:white;
-            padding:40px;
-            border-radius:10px;
-            box-shadow:0 10px 25px rgba(0,0,0,0.1);
-          }
+          <img
+            src="/pic5.jpg"
+            alt="login visual"
+            className="w-full h-full object-cover object-center"
+          />
 
-          .login-box h1{
-            text-align:center;
-            margin-bottom:25px;
-            color:#333;
-          }
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-300" />
 
-          .login-box form{
-            display:flex;
-            flex-direction:column;
-          }
-
-          .login-box input{
-            width:100%;
-            padding:12px;
-            margin-bottom:20px;
-            border:1px solid #ccc;
-            border-radius:5px;
-            outline:none;
-            font-size:15px;
-          }
-
-          .login-box input:focus{
-            border-color:#007bff;
-          }
-
-          .login-box button{
-            width:100%;
-            padding:12px;
-            background:#007bff;
-            color:white;
-            border:none;
-            border-radius:5px;
-            cursor:pointer;
-            font-size:16px;
-            transition:0.3s;
-          }
-
-          .login-box button:hover{
-            background:#0056b3;
-          }
-
-          .login-box button:disabled{
-            background:#999;
-            cursor:not-allowed;
-          }
-
-          .login-box p{
-            margin-top:20px;
-            text-align:center;
-            color:#555;
-          }
-
-          .login-box a{
-            color:#007bff;
-            text-decoration:none;
-            font-weight:bold;
-          }
-
-          .login-box a:hover{
-            text-decoration:underline;
-          }
-        `}
-      </style>
-
-      <div className="login-container">
-        <div className="login-box">
-          <h1>Login</h1>
-          <form onSubmit={sendData}>
-            <input
-              type="email"
-              placeholder="Enter Email"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  email: e.target.value
-                })
-              }
-              required
-            />
-            <input
-              type="password"
-              placeholder="Enter Password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  password: e.target.value
-                })
-              }
-              required
-            />
-            <button
-              type="submit"
-              disabled={loading}
-            >
-              {
-                loading
-                  ? "Loading..."
-                  : "Login"
-              }
-            </button>
-          </form>
-          <p>
-            Don't have an account?
-            <Link to="/register">
-              {" "}Register
-            </Link>
-          </p>
         </div>
+
+        <div className="w-full md:w-2/5 bg-white flex items-center justify-center p-8 md:p-12">
+
+          <div className="w-full max-w-sm">
+
+            <div className="mb-10">
+              <h2 className="text-4xl font-bold text-gray-800">
+                Sign In
+              </h2>
+
+              <p className="text-gray-500 mt-2">
+                Please login to continue
+              </p>
+            </div>
+
+            {error && (
+              <div className="bg-red-100 border border-red-300 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleLogin} className="space-y-6">
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  placeholder="yourmail@gmail.com"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      email: e.target.value
+                    })
+                  }
+                  className="w-full mt-2 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition shadow-sm"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-600">
+                  Password
+                </label>
+
+                <input
+                  type="password"
+                  placeholder="********"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      password: e.target.value
+                    })
+                  }
+                  className="w-full mt-2 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition shadow-sm"
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 hover:opacity-90 hover:scale-[1.01] active:scale-[0.98] transition-all duration-300 shadow-lg disabled:opacity-70"
+              >
+                {loading ? "Signing In..." : "Sign In"}
+              </button>
+
+            </form>
+
+            <p className="text-sm text-gray-500 mt-8 text-center">
+              Don't have an account?
+              <Link
+                to="/register"
+                className="text-purple-600 font-semibold hover:text-pink-500 transition"
+              >
+                Sign up
+              </Link>
+            </p>
+
+          </div>
+        </div>
+
       </div>
-    </>
+    </div>
   )
 }
 
