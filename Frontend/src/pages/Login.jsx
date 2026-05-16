@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState , useEffect} from "react"
 import axios from "axios"
 import Cookies from "js-cookie"
 import { useNavigate, Link } from "react-router-dom"
@@ -8,6 +8,7 @@ const Login = () => {
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [img,setImg]=useState("pic1.jpg")
 
   const [formData, setFormData] = useState({
     email: "",
@@ -50,6 +51,16 @@ const Login = () => {
     }
   }
 
+  useEffect(() => {
+  const images = ["/pic1.jpg", "/pic2.jpg", "/pic3.jpg","pic4.jpg","pic5.jpg"]
+
+  let i = 0
+  setInterval(() => {
+    i = (i + 1) % images.length
+    setImg(images[i])
+  }, 5000)
+}, [])
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-pink-100 to-indigo-100 px-4">
 
@@ -58,7 +69,7 @@ const Login = () => {
         <div className="hidden md:block w-3/5 h-full relative overflow-hidden">
 
           <img
-            src="/pic5.jpg"
+            src={img}
             alt="login visual"
             className="w-full h-full object-cover object-center"
           />

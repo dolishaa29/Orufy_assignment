@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useState, useEffect } from "react"
+import axios from "axios"
+import { useNavigate, Link } from "react-router-dom"
 
 const Register = () => {
+  const navigate = useNavigate()
 
-  const nagivate = useNavigate()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [img, setImg] = useState("/pic1.jpg")
 
   const [formData, setFormData] = useState({
     name: "",
@@ -12,203 +15,174 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     contact: "",
-    address: "",
-  })  
-  const [msg, setMsg] = useState("")
+    address: ""
+  })
 
   const sendData = async (e) => {
     e.preventDefault()
+    setLoading(true)
+    setError("")
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Password and Confirm Password should be same")
+      setError("Passwords do not match")
+      setLoading(false)
+      return
     }
-    else {
 
-      let data = await axios.post(
+    try {
+      const res = await axios.post(
         "http://localhost:7000/register",
         formData
       )
 
-      if (data.data.status) {
-        setMsg(data.data.msg)
-        console.log("data", data.data.msg);
-        alert(data.data.msg)
-        nagivate("/login")
+      if (res.data.status) {
+        navigate("/")
+      } else {
+        setError(res.data.msg || "Registration failed")
       }
-      else {
-        setMsg(data.data.msg)
-        alert(data.data.msg)
-      }
+    } catch (err) {
+      setError("Something went wrong")
+    } finally {
+      setLoading(false)
     }
   }
 
+  useEffect(() => {
+    const images = ["/pic1.jpg", "/pic2.jpg", "/pic3.jpg", "/pic4.jpg", "/pic5.jpg"]
+
+    let i = 0
+
+    const interval = setInterval(() => {
+      i = (i + 1) % images.length
+      setImg(images[i])
+    }, 2000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <>
-      <style>
-        {`
-          *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-          }
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-pink-100 to-indigo-100 px-4">
 
-          body{
-            font-family: Arial, Helvetica, sans-serif;
-            background:#f4f7fb;
-          }
+      <div className="w-full max-w-6xl h-[640px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row-reverse">
 
-          .register-container{
-            width:100%;
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-          }
+        {/* IMAGE SIDE */}
+        <div className="hidden md:block w-3/5 h-full relative overflow-hidden">
 
-          .register-box{
-            width:400px;
-            background:white;
-            padding:30px;
-            border-radius:12px;
-            box-shadow:0 4px 15px rgba(0,0,0,0.1);
-          }
+          <img
+            src={img}
+            alt="register"
+            className="w-full h-full object-cover object-center transition-all duration-700"
+          />
 
-          .register-box h1{
-            text-align:center;
-            margin-bottom:20px;
-            color:#333;
-          }
-
-          .register-box form{
-            display:flex;
-            flex-direction:column;
-            gap:15px;
-          }
-
-          .register-box input{
-            padding:12px;
-            border:1px solid #ccc;
-            border-radius:8px;
-            outline:none;
-            font-size:15px;
-            transition:0.3s;
-          }
-
-          .register-box input:focus{
-            border-color:#4a90e2;
-            box-shadow:0 0 5px rgba(74,144,226,0.5);
-          }
-
-          .register-box button{
-            padding:12px;
-            border:none;
-            border-radius:8px;
-            background:#4a90e2;
-            color:white;
-            font-size:16px;
-            cursor:pointer;
-            transition:0.3s;
-          }
-
-          .register-box button:hover{
-            background:#357abd;
-          }
-
-          .register-box p{
-            margin-top:15px;
-            text-align:center;
-            color:#555;
-          }
-
-          .register-box span{
-            color:#4a90e2;
-            cursor:pointer;
-            font-weight:bold;
-          }
-
-          .register-box span:hover{
-            text-decoration:underline;
-          }
-        `}
-      </style>
-
-      <div className='register-container'>
-
-        <div className='register-box'>
-
-          <h1>Register</h1>
-          <h1>{msg}</h1>
-          <form onSubmit={sendData}>
-
-            <input
-              type="text"
-              placeholder='Name'
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              required
-            />
-
-            <input
-              type="email"
-              placeholder='Email'
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              required
-            />
-
-            <input
-              type="password"
-              placeholder='Password'
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              required
-            />
-
-            <input
-              type="password"
-              placeholder='Confirm Password'
-              onChange={(e) =>
-                setFormData({ ...formData, confirmPassword: e.target.value })
-              }
-              required
-            />
-
-            <input
-              type="number"
-              placeholder='Contact'
-              onChange={(e) =>
-                setFormData({ ...formData, contact: e.target.value })
-              }
-              required
-            />
-
-            <input
-              type="text"
-              placeholder='Address'
-              onChange={(e) =>
-                setFormData({ ...formData, address: e.target.value })
-              }
-              required
-            />
-
-            <button type='submit'>Register</button>
-
-          </form>
-
-          <p>
-            Already have an account?
-            <span onClick={() => nagivate("/")}>
-              {" "}Login
-            </span>
-          </p>
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/50 via-pink-500/40 to-indigo-600/50" />
 
         </div>
 
+        {/* FORM SIDE */}
+        <div className="w-full md:w-2/5 bg-white flex items-center justify-center p-10 md:p-14">
+
+          <div className="w-full max-w-sm">
+
+            <div className="mb-8">
+              <h2 className="text-4xl font-bold text-gray-800">
+                Sign Up
+              </h2>
+
+              <p className="text-gray-500 mt-2">
+                Create your account to continue
+              </p>
+            </div>
+
+            {error && (
+              <div className="bg-red-100 border border-red-300 text-red-600 text-sm px-4 py-3 rounded-xl mb-5">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={sendData} className="space-y-5">
+
+              <input
+                type="text"
+                placeholder="Name"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="number"
+                placeholder="Contact"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, contact: e.target.value })
+                }
+                required
+              />
+
+              <input
+                type="text"
+                placeholder="Address"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none"
+                onChange={(e) =>
+                  setFormData({ ...formData, address: e.target.value })
+                }
+                required
+              />
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-purple-600 via-pink-500 to-indigo-600 hover:opacity-90 transition-all duration-300"
+              >
+                {loading ? "Creating..." : "Sign Up"}
+              </button>
+
+            </form>
+
+            <p className="text-sm text-gray-500 mt-6 text-center">
+              Already have an account?{" "}
+              <Link to="/" className="text-purple-600 font-semibold hover:text-pink-500">
+                Sign in
+              </Link>
+            </p>
+
+          </div>
+        </div>
+
       </div>
-    </>
+    </div>
   )
 }
 
