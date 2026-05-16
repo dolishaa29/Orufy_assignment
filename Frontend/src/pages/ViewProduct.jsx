@@ -14,7 +14,7 @@ const ViewProduct = () => {
     try {
       const token = Cookies.get("token");
       const response = await axios.get(
-        "http://localhost:7000/viewproduct",
+        import.meta.env.VITE_API_URL + "/viewproduct",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ const ViewProduct = () => {
     try {
       const token = Cookies.get("token");
       const response = await axios.delete(
-        `http://localhost:7000/deleteproduct/${id}`,
+        import.meta.env.VITE_API_URL + `/deleteproduct/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -18,7 +18,7 @@ const UpdateProfile = () => {
   const getProfile = async () => {
     try {
       const token = Cookies.get("token");
-      const res = await axios.get("http://localhost:7000/profile", {
+      const res = await axios.get(import.meta.env.VITE_API_URL + "/profile", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.data.user) {
@@ -37,7 +37,7 @@ const UpdateProfile = () => {
     e.preventDefault();
     try {
       const token = Cookies.get("token");
-      const res = await axios.post("http://localhost:7000/updateprofile", user, {
+      const res = await axios.post(import.meta.env.VITE_API_URL + "/updateprofile", user, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert(res.data.message || "Profile Updated Successfully");

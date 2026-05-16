@@ -30,7 +30,7 @@ const EditProduct = () => {
       const token = Cookies.get("token");
 
       const response = await axios.get(
-        `http://localhost:7000/singleproduct/${id}`,
+        import.meta.env.VITE_API_URL + "/singleproduct/${id}",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ const EditProduct = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:7000/editproduct/${id}`,
+        import.meta.env.VITE_API_URL + `/editproduct/${id}`,
         formData,
         {
           headers: {
