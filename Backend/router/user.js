@@ -9,6 +9,6 @@ router.post("/register",register);
 router.post("/login",login);
 router.get('/dashboard',auth,dashboard);
 router.get('/profile',auth,profile);
-router.put('/updateprofile',auth,updateProfile);
+router.post('/updateprofile',auth,updateProfile);
 
 module.exports=router;
