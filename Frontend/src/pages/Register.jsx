@@ -65,7 +65,6 @@ const Register = () => {
 
       <div className="w-full max-w-6xl h-[640px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row-reverse">
 
-        {/* IMAGE SIDE */}
         <div className="hidden md:block w-3/5 h-full relative overflow-hidden">
 
           <img
@@ -74,11 +73,10 @@ const Register = () => {
             className="w-full h-full object-cover object-center transition-all duration-700"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/50 via-pink-500/40 to-indigo-600/50" />
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-300" />
 
         </div>
 
-        {/* FORM SIDE */}
         <div className="w-full md:w-2/5 bg-white flex items-center justify-center p-10 md:p-14">
 
           <div className="w-full max-w-sm">
