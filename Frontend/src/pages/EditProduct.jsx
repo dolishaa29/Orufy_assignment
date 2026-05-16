@@ -19,6 +19,7 @@ const EditProduct = () => {
   });
 
   const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
   useEffect(() => {
     fetchSingleProduct();
@@ -39,6 +40,14 @@ const EditProduct = () => {
 
       setProduct(response.data.product);
 
+      if (response.data.product.Images) {
+        const dbImg = Array.isArray(response.data.product.Images)
+          ? response.data.product.Images[0]
+          : response.data.product.Images;
+
+        setPreview(dbImg);
+      }
+
     } catch (error) {
       console.log(error.response?.data || error.message);
     }
@@ -52,7 +61,13 @@ const EditProduct = () => {
   };
 
   const handleImage = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+
+    setImage(file);
+
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -89,7 +104,7 @@ const EditProduct = () => {
 
       alert(response.data.message);
 
-      navigate("/view-product");
+      navigate("/ViewProduct");
 
     } catch (error) {
       console.log(error.response?.data || error.message);
@@ -97,103 +112,220 @@ const EditProduct = () => {
   };
 
   return (
-    <div>
-      <h1>Edit Product</h1>
+    <div className="min-h-screen bg-[#FFF4F6] p-6">
 
-      <form onSubmit={handleSubmit}>
+      <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl p-8">
 
-        <input
-          type="text"
-          name="ProductName"
-          placeholder="Product Name"
-          value={product.ProductName}
-          onChange={handleChange}
-        />
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
 
-        <br /><br />
+          <div className="md:col-span-2">
 
-        <input
-          type="text"
-          name="ProductType"
-          placeholder="Product Type"
-          value={product.ProductType}
-          onChange={handleChange}
-        />
+            <label className="block mb-3 text-sm font-semibold text-gray-700">
+              Product Image Preview
+            </label>
 
-        <br /><br />
+            <div className="border-2 border-dashed border-pink-200 rounded-3xl bg-pink-50 p-6 flex justify-center items-center">
 
-        <input
-          type="number"
-          name="QuantityStock"
-          placeholder="Quantity"
-          value={product.QuantityStock}
-          onChange={handleChange}
-        />
+              {preview ? (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="w-64 h-64 object-cover rounded-2xl shadow-md"
+                />
+              ) : (
+                <p className="text-gray-400">
+                  No Image Available
+                </p>
+              )}
+            </div>
+          </div>
 
-        <br /><br />
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Product Name
+            </label>
 
-        <input
-          type="number"
-          name="MRP"
-          placeholder="MRP"
-          value={product.MRP}
-          onChange={handleChange}
-        />
+            <input
+              type="text"
+              name="ProductName"
+              value={product.ProductName}
+              onChange={handleChange}
+              placeholder="Enter Product Name"
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+              required
+            />
+          </div>
 
-        <br /><br />
+       
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Product Type
+            </label>
 
-        <input
-          type="number"
-          name="SellingPrice"
-          placeholder="Selling Price"
-          value={product.SellingPrice}
-          onChange={handleChange}
-        />
+            <input
+              type="text"
+              name="ProductType"
+              value={product.ProductType}
+              onChange={handleChange}
+              placeholder="Enter Product Type"
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+            />
+          </div>
 
-        <br /><br />
+     
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Quantity Stock
+            </label>
 
-        <input
-          type="text"
-          name="BrandName"
-          placeholder="Brand Name"
-          value={product.BrandName}
-          onChange={handleChange}
-        />
+            <input
+              type="number"
+              name="QuantityStock"
+              value={product.QuantityStock}
+              onChange={handleChange}
+              placeholder="Enter Quantity"
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+              required
+            />
+          </div>
 
-        <br /><br />
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              MRP
+            </label>
 
-        <input
-          type="text"
-          name="Exchange"
-          placeholder="Exchange"
-          value={product.Exchange}
-          onChange={handleChange}
-        />
+            <input
+              type="number"
+              name="MRP"
+              value={product.MRP}
+              onChange={handleChange}
+              placeholder="Enter MRP"
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+              required
+            />
+          </div>
 
-        <br /><br />
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Selling Price
+            </label>
 
-        <input
-          type="text"
-          name="Type"
-          placeholder="Type"
-          value={product.Type}
-          onChange={handleChange}
-        />
+            <input
+              type="number"
+              name="SellingPrice"
+              value={product.SellingPrice}
+              onChange={handleChange}
+              placeholder="Enter Selling Price"
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+              required
+            />
+          </div>
 
-        <br /><br />
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Brand Name
+            </label>
 
-        <input
-          type="file"
-          onChange={handleImage}
-        />
+            <input
+              type="text"
+              name="BrandName"
+              value={product.BrandName}
+              onChange={handleChange}
+              placeholder="Enter Brand Name"
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+            />
+          </div>
 
-        <br /><br />
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Exchange Available
+            </label>
 
-        <button type="submit">
-          Update Product
-        </button>
+            <select
+              name="Exchange"
+              value={product.Exchange}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+            >
+              <option value="">
+                Select Exchange
+              </option>
 
-      </form>
+              <option value="yes">
+                Yes
+              </option>
+
+              <option value="no">
+                No
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Product Status
+            </label>
+
+            <select
+              name="Type"
+              value={product.Type}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
+            >
+              <option value="">
+                Select Status
+              </option>
+
+              <option value="published">
+                Published
+              </option>
+
+              <option value="unpublished">
+                Unpublished
+              </option>
+            </select>
+          </div>
+
+          <div className="md:col-span-2">
+
+            <label className="block mb-2 text-sm font-semibold text-gray-700">
+              Change Product Image
+            </label>
+
+            <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 bg-gray-50 hover:bg-gray-100 transition">
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImage}
+                className="w-full text-gray-600"
+              />
+            </div>
+          </div>
+
+          <div className="md:col-span-2 flex gap-4 mt-4">
+
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="flex-1 border border-gray-300 hover:bg-gray-100 py-4 rounded-2xl font-semibold transition"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="flex-1 bg-[#2E2526] hover:bg-black text-white py-4 rounded-2xl font-semibold shadow-lg transition"
+            >
+              Update Product
+            </button>
+          </div>
+
+        </form>
+      </div>
     </div>
   );
 };

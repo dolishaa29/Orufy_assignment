@@ -1,52 +1,65 @@
-import React from "react"
+import React from "react";
+import { PlusCircle, Package, User, LogOut } from "lucide-react";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ setSelectedPage }) => {
+const Navbar = ({ selectedPage, setSelectedPage }) => {
+  const navigate = useNavigate();
+
+  const menuItems = [
+    { id: "viewProduct", label: "View Product", icon: Package },
+    { id: "addProduct", label: "Add Product", icon: PlusCircle },
+    { id: "profile", label: "Profile", icon: User },
+  ];
+
+  const handleSignOut = () => {
+    if (!window.confirm("Are you sure you want to sign out?")) return;
+    Cookies.remove("token");
+    navigate("/"); 
+  };
+
   return (
-    <nav className="w-72 min-h-screen bg-white border-r border-pink-100 shadow-sm flex flex-col p-6">
-
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold text-[#2E2526]">
-          Product Panel
-        </h1>
-
-        <p className="text-sm text-[#8C7A7C] mt-2">
-          Manage your products
-        </p>
+    <nav className="w-full bg-white/80 backdrop-blur-md border-b border-slate-200/60 px-6 py-4 flex items-center justify-between antialiased font-sans sticky top-0 z-50 gap-4">
+    
+      <div className="text-xl font-bold bg-gradient-to-r align-middle from-indigo-600 to-indigo-800 bg-clip-text text-transparent tracking-tight shrink-0">
+        Products
+      </div>
+      <div className="flex items-center justify-center flex-1 gap-4 max-w-xl mx-auto">
+        {menuItems.map(({ id, label, icon: Icon }) => {
+          const isActive = selectedPage === id;
+          return (
+            <button
+              key={id}
+              onClick={() => setSelectedPage(id)}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all relative ${
+                isActive 
+                  ? "bg-indigo-50/80 text-indigo-600" 
+                  : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
+              }`}
+            >
+              <Icon size={18} strokeWidth={isActive ? 2.2 : 1.8} className={isActive ? "text-indigo-600" : "text-slate-400"} />
+              <span>{label}</span>
+              
+              {isActive && (
+                <div className="absolute bottom-0 left-4 right-4 h-0.5 bg-indigo-600 rounded-t-full" />
+              )}
+            </button>
+          );
+        })}
       </div>
 
-      <div className="flex flex-col gap-3">
-
+      <div className="shrink-0">
         <button
-          onClick={() => setSelectedPage("dashboard")}
-          className="text-left px-5 py-3 rounded-xl hover:bg-pink-100 transition"
+          onClick={handleSignOut}
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-rose-50/60 hover:bg-rose-50 border border-rose-100/50 hover:border-rose-200 text-rose-600 rounded-xl text-xs font-semibold transition-all duration-200 active:scale-[0.98]"
         >
-          Dashboard
+          <LogOut size={14} strokeWidth={2.2} />
+          Sign Out
         </button>
-
-        <button
-          onClick={() => setSelectedPage("addProduct")}
-          className="text-left px-5 py-3 rounded-xl hover:bg-pink-100 transition"
-        >
-          Add Product
-        </button>
-
-        <button
-          onClick={() => setSelectedPage("viewProduct")}
-          className="text-left px-5 py-3 rounded-xl hover:bg-pink-100 transition"
-        >
-          View Product
-        </button>
-
-        <button
-          onClick={() => setSelectedPage("profile")}
-          className="text-left px-5 py-3 rounded-xl hover:bg-pink-100 transition"
-        >
-          Profile
-        </button>
-
       </div>
+
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
