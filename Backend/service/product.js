@@ -166,19 +166,14 @@ exports.deleteproduct = async (req, res) => {
 exports.singleproduct = async (req, res) => {
   try {
 
-    // Auth user
     const user = req.user._id;
 
-    // Product id
     const productId = req.params.id;
-
-    // Find product
     const product = await rec.findOne({
       _id: productId,
       User: user,
     });
 
-    // Product not found
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -186,7 +181,6 @@ exports.singleproduct = async (req, res) => {
       });
     }
 
-    // Success response
     return res.status(200).json({
       success: true,
       product,

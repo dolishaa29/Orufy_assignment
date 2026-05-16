@@ -41,7 +41,7 @@ const UpdateProfile = () => {
     try {
       const token = Cookies.get("token");
 
-      const res = await axios.put(
+      const res = await axios.post(
         "http://localhost:7000/updateprofile",
         user,
         {
