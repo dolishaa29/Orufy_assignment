@@ -9,6 +9,7 @@ let productmodel=mongo.Schema({
     Images:{type:String},
     Exchange:{type:String , enum:['yes','no']},
     Type:{type:String , enum:['published','unpublished']},
+    User:{type:String}
 })
 
 module.exports=mongo.model('product',productmodel);
