@@ -7,6 +7,7 @@ import priroutes from "./components/priroutes";
 import AddProduct from "./pages/AddProduct";
 import ViewProduct from "./pages/ViewProduct";
 import EditProduct from "./pages/EditProduct";
+import UpdateProfile from "./pages/UpdateProfile";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/AddProduct" element={<AddProduct/>}/>
         <Route path="/ViewProduct" element={<ViewProduct/>}/>
         <Route path="/EditProduct/:id" element={<EditProduct/>}/>
+        <Route path="/ViewProfile" element={<UpdateProfile/>}/>
       </Routes>
     </BrowserRouter>
   );

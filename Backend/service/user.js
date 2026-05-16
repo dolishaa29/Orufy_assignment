@@ -83,3 +83,41 @@ exports.dashboard=async(req,res)=>
     });
 }
 
+exports.profile = async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      user: req.user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const { name, email, contact, address } = req.body;
+
+    const updated = await rec.findByIdAndUpdate(
+      userId,
+      {
+        name,
+        email,
+        contact,
+        address,
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated",
+      user: updated,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

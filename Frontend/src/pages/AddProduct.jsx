@@ -42,7 +42,7 @@ const AddProduct = () => {
         formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // ⭐ important
+            Authorization: `Bearer ${token}`,
           },
           withCredentials: true,
         }

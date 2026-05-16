@@ -57,6 +57,10 @@ const Dashboard = () => {
       name: 'View Product',
       path: '/ViewProduct',
     },
+    {
+      name :'View Profile',
+      path: '/ViewProfile',
+    }
   ];
 
   if (loading) {
