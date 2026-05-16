@@ -10,7 +10,7 @@ let cookieParser=require('cookie-parser');
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'/public')));
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://orufy-assignment-puce.vercel.app",
     methods:["POST","GET","DELETE","PUT"],
     credentials:true,
 }));
