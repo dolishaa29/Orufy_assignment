@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import priroutes from "./components/priroutes";
 import AddProduct from "./pages/AddProduct";
+import ViewProduct from "./pages/ViewProduct";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/" element={<Login/>} />
         <Route path="/dashboard" element={<priroutes><Dashboard/></priroutes>} />
         <Route path="/AddProduct" element={<AddProduct/>}/>
+        <Route path="/ViewProduct" element={<ViewProduct/>}/>
+        <Route path="/EditProduct/:id" element={<EditProduct/>}/>
       </Routes>
     </BrowserRouter>
   );

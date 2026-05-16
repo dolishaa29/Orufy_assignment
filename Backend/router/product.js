@@ -1,40 +1,18 @@
 let usermodel = require("../model/user");
 const express = require("express");
 let router = express.Router();
-
 let auth = require("../middleware/user");
-
-const upload = require("../middleware/multer"); // ✔️ FIX
-
+const upload = require("../middleware/multer"); 
 const cloudinary = require("../config/cloudinary");
 
-const {
-  addproduct,
-  viewproduct,
-  editproduct,
-  deleteproduct
-} = require("../controller/product");
+const {addproduct,viewproduct,editproduct,deleteproduct} = require("../controller/product");
+const { singleproduct } = require("../service/product");
 
-/* ADD PRODUCT */
-router.post(
-  "/addproduct",
-  auth,
-  upload.single("Images"),   // ✔️ FIX
-  addproduct
-);
 
-/* VIEW */
+router.post("/addproduct",auth,upload.single("Images"),addproduct);
 router.get("/viewproduct", auth, viewproduct);
-
-/* EDIT */
-router.put(
-  "/editproduct/:id",
-  auth,
-  upload.single("image"),   // ✔️ FIX
-  editproduct
-);
-
-/* DELETE */
+router.put("/editproduct/:id",auth,upload.single("image"),editproduct);
 router.delete("/deleteproduct/:id", auth, deleteproduct);
+router.get("/singleproduct/:id",auth,singleproduct);
 
 module.exports = router;

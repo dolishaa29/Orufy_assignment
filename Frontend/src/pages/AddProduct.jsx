@@ -27,7 +27,7 @@ const AddProduct = () => {
     e.preventDefault();
 
     try {
-      const token = Cookies.get("token"); // cookie se token
+      const token = Cookies.get("token"); 
 
       const formData = new FormData();
 
