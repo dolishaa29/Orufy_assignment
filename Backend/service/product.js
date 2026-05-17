@@ -195,3 +195,51 @@ exports.singleproduct = async (req, res) => {
     });
   }
 };
+
+
+exports.explore=async(req,res)=>
+{
+  try{
+    const products = await rec.find();
+    return res.status(200).json({
+      success: true,
+      products:products,
+    });
+  }
+  catch(error){
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+exports.singleproductexplore = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const product = await rec.findOne({
+      _id: productId,
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      product:product,
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
