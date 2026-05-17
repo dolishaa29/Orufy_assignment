@@ -121,3 +121,21 @@ exports.updateProfile = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.alluser=async(req,res)=>
+{
+  try{
+  const user=await rec.find();
+  return res.status(200).json({
+      success: true,
+      user:user,
+    });
+  }
+  catch(err)
+  {
+    console.log(err);
+    return res.status(500).json({
+      success:false,
+    })
+  }
+}

@@ -1,4 +1,4 @@
-const { register, login } = require("../service/user")
+const { register, login, alluser } = require("../service/user")
 
 exports.register=async(req,res)=>
 {
@@ -7,4 +7,8 @@ exports.register=async(req,res)=>
 exports.login=async(req,res)=>
 {
   await login(req,res);
+}
+exports.alluser=async(req,res)=>
+{
+  await alluser(req,res);
 }
