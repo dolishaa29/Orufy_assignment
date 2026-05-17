@@ -10,7 +10,8 @@ let cookieParser=require('cookie-parser');
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'/public')));
 app.use(cors({
-    origin:"https://orufy-assignment-puce.vercel.app",
+    origin:"http://localhost:5173",
+    //origin:"https://orufy-assignment-puce.vercel.app",
     methods:["POST","GET","DELETE","PUT"],
     credentials:true,
 }));
@@ -18,7 +19,7 @@ app.use(cors({
 app.use("/",require("./router/user"));
 app.use("/",require("./router/product"));
 
-const PORT=process.env.PORT || 7000;
+const PORT=process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -29,8 +29,9 @@ const EditProduct = () => {
     try {
       const token = Cookies.get("token");
 
+      // FIXED: Pure string ko backticks (``) me wrap kiya hai taaki dynamic id pass ho sake
       const response = await axios.get(
-        import.meta.env.VITE_API_URL + "/singleproduct/${id}",
+        `${import.meta.env.VITE_API_URL}/singleproduct/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,18 +39,21 @@ const EditProduct = () => {
         }
       );
 
-      setProduct(response.data.product);
+      // Backend se product data sahi milne par state update hogi
+      if (response.data && response.data.product) {
+        setProduct(response.data.product);
 
-      if (response.data.product.Images) {
-        const dbImg = Array.isArray(response.data.product.Images)
-          ? response.data.product.Images[0]
-          : response.data.product.Images;
+        if (response.data.product.Images) {
+          const dbImg = Array.isArray(response.data.product.Images)
+            ? response.data.product.Images[0]
+            : response.data.product.Images;
 
-        setPreview(dbImg);
+          setPreview(dbImg);
+        }
       }
 
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      console.log("Error fetching product:", error.response?.data || error.message);
     }
   };
 
@@ -62,9 +66,7 @@ const EditProduct = () => {
 
   const handleImage = (e) => {
     const file = e.target.files[0];
-
     setImage(file);
-
     if (file) {
       setPreview(URL.createObjectURL(file));
     }
@@ -75,7 +77,6 @@ const EditProduct = () => {
 
     try {
       const token = Cookies.get("token");
-
       const formData = new FormData();
 
       formData.append("ProductName", product.ProductName);
@@ -92,7 +93,7 @@ const EditProduct = () => {
       }
 
       const response = await axios.put(
-        import.meta.env.VITE_API_URL + `/editproduct/${id}`,
+        `${import.meta.env.VITE_API_URL}/editproduct/${id}`,
         formData,
         {
           headers: {
@@ -103,7 +104,6 @@ const EditProduct = () => {
       );
 
       alert(response.data.message);
-
       navigate("/ViewProduct");
 
     } catch (error) {
@@ -113,22 +113,14 @@ const EditProduct = () => {
 
   return (
     <div className="min-h-screen bg-[#FFF4F6] p-6">
-
       <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl p-8">
-
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
           <div className="md:col-span-2">
-
             <label className="block mb-3 text-sm font-semibold text-gray-700">
               Product Image Preview
             </label>
-
             <div className="border-2 border-dashed border-pink-200 rounded-3xl bg-pink-50 p-6 flex justify-center items-center">
-
               {preview ? (
                 <img
                   src={preview}
@@ -136,9 +128,7 @@ const EditProduct = () => {
                   className="w-64 h-64 object-cover rounded-2xl shadow-md"
                 />
               ) : (
-                <p className="text-gray-400">
-                  No Image Available
-                </p>
+                <p className="text-gray-400">No Image Available</p>
               )}
             </div>
           </div>
@@ -147,11 +137,10 @@ const EditProduct = () => {
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Product Name
             </label>
-
             <input
               type="text"
               name="ProductName"
-              value={product.ProductName}
+              value={product.ProductName || ""}
               onChange={handleChange}
               placeholder="Enter Product Name"
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
@@ -159,32 +148,28 @@ const EditProduct = () => {
             />
           </div>
 
-       
           <div>
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Product Type
             </label>
-
             <input
               type="text"
               name="ProductType"
-              value={product.ProductType}
+              value={product.ProductType || ""}
               onChange={handleChange}
               placeholder="Enter Product Type"
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
             />
           </div>
 
-     
           <div>
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Quantity Stock
             </label>
-
             <input
               type="number"
               name="QuantityStock"
-              value={product.QuantityStock}
+              value={product.QuantityStock || ""}
               onChange={handleChange}
               placeholder="Enter Quantity"
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
@@ -196,11 +181,10 @@ const EditProduct = () => {
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               MRP
             </label>
-
             <input
               type="number"
               name="MRP"
-              value={product.MRP}
+              value={product.MRP || ""}
               onChange={handleChange}
               placeholder="Enter MRP"
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
@@ -212,11 +196,10 @@ const EditProduct = () => {
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Selling Price
             </label>
-
             <input
               type="number"
               name="SellingPrice"
-              value={product.SellingPrice}
+              value={product.SellingPrice || ""}
               onChange={handleChange}
               placeholder="Enter Selling Price"
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
@@ -228,11 +211,10 @@ const EditProduct = () => {
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Brand Name
             </label>
-
             <input
               type="text"
               name="BrandName"
-              value={product.BrandName}
+              value={product.BrandName || ""}
               onChange={handleChange}
               placeholder="Enter Brand Name"
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
@@ -243,24 +225,15 @@ const EditProduct = () => {
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Exchange Available
             </label>
-
             <select
               name="Exchange"
-              value={product.Exchange}
+              value={product.Exchange || ""}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
             >
-              <option value="">
-                Select Exchange
-              </option>
-
-              <option value="yes">
-                Yes
-              </option>
-
-              <option value="no">
-                No
-              </option>
+              <option value="">Select Exchange</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
             </select>
           </div>
 
@@ -268,35 +241,23 @@ const EditProduct = () => {
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Product Status
             </label>
-
             <select
               name="Type"
-              value={product.Type}
+              value={product.Type || ""}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-pink-300"
             >
-              <option value="">
-                Select Status
-              </option>
-
-              <option value="published">
-                Published
-              </option>
-
-              <option value="unpublished">
-                Unpublished
-              </option>
+              <option value="">Select Status</option>
+              <option value="published">Published</option>
+              <option value="unpublished">Unpublished</option>
             </select>
           </div>
 
           <div className="md:col-span-2">
-
             <label className="block mb-2 text-sm font-semibold text-gray-700">
               Change Product Image
             </label>
-
             <div className="border-2 border-dashed border-gray-300 rounded-2xl p-6 bg-gray-50 hover:bg-gray-100 transition">
-
               <input
                 type="file"
                 accept="image/*"
@@ -307,7 +268,6 @@ const EditProduct = () => {
           </div>
 
           <div className="md:col-span-2 flex gap-4 mt-4">
-
             <button
               type="button"
               onClick={() => navigate(-1)}
@@ -315,7 +275,6 @@ const EditProduct = () => {
             >
               Cancel
             </button>
-
             <button
               type="submit"
               className="flex-1 bg-[#2E2526] hover:bg-black text-white py-4 rounded-2xl font-semibold shadow-lg transition"
