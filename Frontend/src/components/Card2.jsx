@@ -7,7 +7,8 @@ const Card2 = ({ item, sellerContact }) => {
     if (sellerContact && sellerContact !== "Not Available") {
       //const cleanNumber = sellerContact.replace(/[^\d]/g, "");
       const cleanNumber=9414016427
-      window.open(`https://wa.me/${cleanNumber}`, "_blank");
+      const encodedMessage="heyy how can we place order"
+      window.open(`https://wa.me/${cleanNumber}?text=${encodedMessage}`, "_blank");
     } else {
       alert("Seller contact is not available");
     }
