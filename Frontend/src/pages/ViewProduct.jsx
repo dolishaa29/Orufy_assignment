@@ -6,7 +6,7 @@ import Card from "../components/Card";
 
 const ViewProduct = () => {
   const [products, setProducts] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("all"); // 'all', 'published', 'unpublished'
+  const [activeFilter, setActiveFilter] = useState("all"); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,7 +53,6 @@ const ViewProduct = () => {
     navigate(`/EditProduct/${id}`);
   };
 
-  // --- FILTER LOGIC ---
   const filteredProducts = products.filter((product) => {
     if (activeFilter === "published") return product.Type === "published";
     if (activeFilter === "unpublished") return product.Type === "unpublished";
@@ -61,11 +60,9 @@ const ViewProduct = () => {
   });
 
   return (
-    // CHANGED: Yahan se bg-slate-50 hata kar bg-transparent kar diya hai
     <div className="min-h-screen bg-transparent p-4 md:p-6">
       <div className="mx-auto max-w-6xl">
         
-        {/* Only Filter Tabs */}
         <div className="mb-6 flex border-b border-slate-200">
           {[
             { id: "all", label: "All", count: products.length },
@@ -90,8 +87,6 @@ const ViewProduct = () => {
             </button>
           ))}
         </div>
-
-        {/* Products Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((item) => (
@@ -104,7 +99,6 @@ const ViewProduct = () => {
             ))}
           </div>
         ) : (
-          // CHANGED: Empty state box se bhi bg-white hata kar bg-transparent kiya hai
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-transparent p-12 text-center">
             <p className="text-base font-medium text-slate-600">No Products Found</p>
             <p className="text-sm text-slate-400 mt-1">

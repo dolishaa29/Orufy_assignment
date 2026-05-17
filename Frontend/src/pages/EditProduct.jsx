@@ -28,8 +28,6 @@ const EditProduct = () => {
   const fetchSingleProduct = async () => {
     try {
       const token = Cookies.get("token");
-
-      // FIXED: Pure string ko backticks (``) me wrap kiya hai taaki dynamic id pass ho sake
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/singleproduct/${id}`,
         {
@@ -39,7 +37,6 @@ const EditProduct = () => {
         }
       );
 
-      // Backend se product data sahi milne par state update hogi
       if (response.data && response.data.product) {
         setProduct(response.data.product);
 

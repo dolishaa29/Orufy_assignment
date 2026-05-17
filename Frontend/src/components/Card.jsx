@@ -3,16 +3,13 @@ import React from "react";
 const Card = ({ item, onEdit, onDelete }) => {
   const isOutOfStock = item.QuantityStock <= 0;
   
-  // FIXED: Agar database se image array format me aaye to pehli image nikaale
   const productImg = Array.isArray(item.Images) ? item.Images[0] : item.Images;
 
-  // Check if product status is published
   const isPublished = item.Type === "published";
 
   return (
     <div className="flex max-w-md items-center gap-4 rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all duration-200 hover:shadow-md">
       
-      {/* Product Image Container */}
       <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-slate-50 border border-slate-100">
         <img
           src={productImg || "https://via.placeholder.com/150"} 
@@ -20,17 +17,13 @@ const Card = ({ item, onEdit, onDelete }) => {
           className="h-full w-full object-cover"
         />
       </div>
-
-      {/* Content Side */}
       <div className="flex flex-1 flex-col min-w-0">
         <div className="flex items-center justify-between gap-2">
-          {/* Fallback add kiya hai takii brand name khali hone par blank na dikhe */}
           <span className="truncate text-xs font-semibold tracking-wider text-slate-400 uppercase">
             {item.BrandName || "No Brand"}
           </span>
           
           <div className="flex items-center gap-1.5">
-            {/* Status Indicator Green dot for published / Gray dot for unpublished */}
             <span 
               className={`inline-block w-2 h-2 rounded-full ${isPublished ? "bg-emerald-500" : "bg-slate-400"}`}
               title={isPublished ? "Published" : "Unpublished"}
