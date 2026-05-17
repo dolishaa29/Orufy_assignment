@@ -105,7 +105,7 @@ const EditProduct = () => {
       navigate("/ViewProduct");
 
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      console.log(error.response?.data );
     }
   };
 

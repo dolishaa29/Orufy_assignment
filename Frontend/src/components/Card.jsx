@@ -12,15 +12,15 @@ const Card = ({ item, onEdit, onDelete }) => {
       
       <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-slate-50 border border-slate-100">
         <img
-          src={productImg || "https://via.placeholder.com/150"} 
-          alt={item.ProductName || "Product"}
+          src={productImg} 
+          alt={item.ProductName}
           className="h-full w-full object-cover"
         />
       </div>
       <div className="flex flex-1 flex-col min-w-0">
         <div className="flex items-center justify-between gap-2">
           <span className="truncate text-xs font-semibold tracking-wider text-slate-400 uppercase">
-            {item.BrandName || "No Brand"}
+            {item.BrandName}
           </span>
           
           <div className="flex items-center gap-1.5">
@@ -35,7 +35,7 @@ const Card = ({ item, onEdit, onDelete }) => {
         </div>
 
         <h2 className="truncate text-sm font-bold text-slate-800" title={item.ProductName}>
-          {item.ProductName || "Untitled Product"}
+          {item.ProductName}
         </h2>
 
         <div className="mt-1 flex items-center gap-2">
@@ -44,7 +44,7 @@ const Card = ({ item, onEdit, onDelete }) => {
             <span className="text-xs text-slate-400 line-through">₹{item.MRP}</span>
           )}
           <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 truncate max-w-[80px]">
-            {item.ProductType || "General"}
+            {item.ProductType}
           </span>
         </div>
 
