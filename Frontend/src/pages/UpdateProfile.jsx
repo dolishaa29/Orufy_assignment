@@ -11,6 +11,10 @@ const UpdateProfile = () => {
     address: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
   useEffect(() => {
     getProfile();
   }, []);
@@ -35,34 +39,66 @@ const UpdateProfile = () => {
 
   const updateProfile = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(user.email)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
+
+    const contactRegex = /^[6-9]\d{9}$/;
+    if (user.contact && !contactRegex.test(user.contact)) {
+      setError("Please enter a valid 10-digit mobile number");
+      setLoading(false);
+      return;
+    }
+
     try {
       const token = Cookies.get("token");
       const res = await axios.post(import.meta.env.VITE_API_URL + "/updateprofile", user, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert(res.data.message || "Profile Updated Successfully");
+      
+      setSuccess(res.data.message || "Profile Updated Successfully!");
+      setTimeout(() => setSuccess(""), 4000);
     } catch (err) {
       console.error(err);
-      alert("Error updating profile");
+      setError("Error updating profile. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-transparent p-6 lg:p-10 antialiased font-sans">
-
-      <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/60 shadow-[0_2px_12px_-3px_rgba(0,0,0,0.04)] p-6 sm:p-10">
+    <div className="w-full min-h-full py-6 flex items-center justify-center antialiased font-sans">
+      <div className="w-full max-w-md mx-auto bg-white/80 backdrop-blur-md rounded-2xl border border-white/60 shadow-2xl p-6 sm:p-8 flex flex-col items-center">
         
-        <div className="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xl font-bold shadow-sm">
+        <div className="flex flex-col items-center text-center w-full mb-6 pb-6 border-b border-slate-100">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-pink-400 to-indigo-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg mb-3 hover:scale-105 transition-transform duration-300">
             {user.name ? user.name.charAt(0).toUpperCase() : "A"}
           </div>
           <div>
-            <h3 className="text-base font-bold text-slate-800">{user.name || "Admin User"}</h3>
-            <p className="text-xs text-slate-400 font-medium">{user.email || "admin@store.com"}</p>
+            <h3 className="text-xl font-bold text-gray-800 tracking-tight">{user.name || "Admin User"}</h3>
+            <p className="text-xs text-gray-400 font-medium mt-0.5">{user.email || "admin@store.com"}</p>
           </div>
         </div>
 
-        <form onSubmit={updateProfile} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {error && (
+          <div className="w-full bg-red-50 border border-red-200 text-red-600 text-xs font-semibold px-4 py-3 rounded-xl mb-4 text-center">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="w-full bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-semibold px-4 py-3 rounded-xl mb-4 text-center">
+            {success}
+          </div>
+        )}
+
+        <form onSubmit={updateProfile} className="w-full grid grid-cols-1 gap-5">
           
           <div>
             <label className="block mb-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Full Name</label>
@@ -76,7 +112,7 @@ const UpdateProfile = () => {
                 value={user.name || ""}
                 onChange={handleChange}
                 placeholder="John Doe"
-                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
                 required
               />
             </div>
@@ -94,7 +130,7 @@ const UpdateProfile = () => {
                 value={user.email || ""}
                 onChange={handleChange}
                 placeholder="john@example.com"
-                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
                 required
               />
             </div>
@@ -107,12 +143,17 @@ const UpdateProfile = () => {
                 <Phone size={16} />
               </span>
               <input
-                type="text"
+                type="tel"
                 name="contact"
                 value={user.contact || ""}
-                onChange={handleChange}
-                placeholder="+1 (555) 000-0000"
-                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+                maxLength={10}
+                placeholder="9876543210"
+                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, "");
+                  setUser({ ...user, contact: value });
+                }}
+                required
               />
             </div>
           </div>
@@ -129,18 +170,20 @@ const UpdateProfile = () => {
                 value={user.address || ""}
                 onChange={handleChange}
                 placeholder="Street 12, New York"
-                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-11 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
+                required
               />
             </div>
           </div>
 
-          <div className="md:col-span-2 mt-4">
+          <div className="mt-2">
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-3.5 rounded-xl text-sm font-semibold shadow-sm hover:shadow transition-all duration-200 active:scale-[0.99]"
+              disabled={loading}
+              className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-pink-400 to-indigo-600 hover:opacity-90 text-white py-3.5 rounded-xl text-sm font-semibold shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 disabled:opacity-70"
             >
               <UserCheck size={16} strokeWidth={2.2} />
-              Save Changes
+              {loading ? "Saving Changes..." : "Save Changes"}
             </button>
           </div>
 

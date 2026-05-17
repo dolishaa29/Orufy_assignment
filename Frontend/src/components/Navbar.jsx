@@ -1,5 +1,5 @@
 import React from "react";
-import { PlusCircle, Package, User, LogOut } from "lucide-react";
+import { PlusCircle, Package, User, LogOut , Compass } from "lucide-react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,7 @@ const Navbar = ({ selectedPage, setSelectedPage }) => {
     { id: "viewProduct", label: "View Product", icon: Package },
     { id: "addProduct", label: "Add Product", icon: PlusCircle },
     { id: "profile", label: "Profile", icon: User },
+    {id:"Explore" ,label:"Explore" ,icon:Compass}
   ];
 
   const handleSignOut = () => {

@@ -60,8 +60,15 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent p-6 lg:p-10 antialiased font-sans">
-      <div className="max-w-4xl mx-auto bg-white/80 backdrop-blur-md rounded-2xl border border-slate-200/60 shadow-[0_2px_12px_-3px_rgba(0,0,0,0.04)] p-6 sm:p-10">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-pink-100 to-indigo-100 p-6 lg:p-10 antialiased font-sans">
+      
+      <div className="w-full max-w-4xl mx-auto bg-white/80 backdrop-blur-md rounded-2xl border border-white/60 shadow-2xl p-6 sm:p-10">
+        
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-gray-800">Add New Product</h2>
+          <p className="text-gray-500 mt-1 text-sm">Fill in the details below to publish a new product to your catalog.</p>
+        </div>
+
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           <div>
@@ -72,7 +79,7 @@ const AddProduct = () => {
               value={form.ProductName}
               onChange={handleChange}
               placeholder="e.g. Wireless Headphones"
-              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
               required
             />
           </div>
@@ -85,7 +92,7 @@ const AddProduct = () => {
               value={form.ProductType}
               onChange={handleChange}
               placeholder="e.g. Electronics"
-              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
               required
             />
           </div>
@@ -98,7 +105,7 @@ const AddProduct = () => {
               value={form.QuantityStock}
               onChange={handleChange}
               placeholder="0"
-              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
               required
             />
           </div>
@@ -111,7 +118,7 @@ const AddProduct = () => {
               value={form.BrandName}
               onChange={handleChange}
               placeholder="e.g. Sony"
-              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
               required
             />
           </div>
@@ -126,7 +133,7 @@ const AddProduct = () => {
                 value={form.MRP}
                 onChange={handleChange}
                 placeholder="0.00"
-                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-8 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-8 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
                 required
               />
             </div>
@@ -142,7 +149,7 @@ const AddProduct = () => {
                 value={form.SellingPrice}
                 onChange={handleChange}
                 placeholder="0.00"
-                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-8 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800"
+                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 pl-8 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-800 shadow-sm"
                 required
               />
             </div>
@@ -154,7 +161,7 @@ const AddProduct = () => {
               name="Exchange"
               value={form.Exchange}
               onChange={handleChange}
-              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-600 appearance-none"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-600 appearance-none shadow-sm"
               required
             >
               <option value="" className="text-slate-400">Select option</option>
@@ -169,7 +176,7 @@ const AddProduct = () => {
               name="Type"
               value={form.Type}
               onChange={handleChange}
-              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-600 appearance-none"
+              className="w-full bg-slate-50/50 border border-slate-200 rounded-xl p-3.5 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/10 text-slate-600 appearance-none shadow-sm"
               required
             >
               <option value="" className="text-slate-400">Select status</option>
@@ -180,7 +187,7 @@ const AddProduct = () => {
 
           <div className="md:col-span-2">
             <label className="block mb-1.5 text-xs font-bold uppercase tracking-wider text-slate-500">Product Image</label>
-            <label className="group relative flex flex-col items-center justify-center w-full min-h-[140px] border-2 border-dashed border-slate-200 hover:border-indigo-500 rounded-2xl cursor-pointer bg-slate-50/30 hover:bg-slate-50/80 transition-all p-4 text-center">
+            <label className="group relative flex flex-col items-center justify-center w-full min-h-[140px] border-2 border-dashed border-slate-200 hover:border-indigo-500 rounded-2xl cursor-pointer bg-white/50 hover:bg-white transition-all p-4 text-center shadow-sm">
               <input
                 type="file"
                 accept="image/*"
@@ -207,7 +214,7 @@ const AddProduct = () => {
           <div className="md:col-span-2 mt-4">
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-3.5 rounded-xl text-sm font-semibold shadow-sm hover:shadow transition-all duration-200 active:scale-[0.99]"
+              className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-pink-300  to-indigo-600 hover:opacity-90 text-white py-3.5 rounded-xl text-sm font-semibold shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all duration-300"
             >
               <PackagePlus size={16} strokeWidth={2.2} />
               Publish Product

@@ -11,5 +11,4 @@ router.get('/dashboard',auth,dashboard);
 router.get('/profile',auth,profile);
 router.post('/updateprofile',auth,updateProfile);
 router.get("/alluser",alluser);
-
 module.exports=router;

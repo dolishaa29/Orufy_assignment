@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import AddProduct from "./AddProduct";
 import ViewProduct from "./ViewProduct";
 import UpdateProfile from "./UpdateProfile";
+import Explore from './Explore';
 
 const Dashboard = () => {
   const [selectedPage, setSelectedPage] = useState("viewProduct");
@@ -42,14 +43,16 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50/50 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px] antialiased font-sans">
-      
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-purple-100 via-pink-100 to-indigo-100 antialiased font-sans">
       <Navbar selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
 
       <main className="flex-1 overflow-y-auto p-6">
-        {selectedPage === "viewProduct" && <ViewProduct />}
-        {selectedPage === "addProduct" && <AddProduct />}
-        {selectedPage === "profile" && <UpdateProfile />}
+        <div className="h-full w-full transition-all duration-300">
+          {selectedPage === "viewProduct" && <ViewProduct />}
+          {selectedPage === "addProduct" && <AddProduct />}
+          {selectedPage === "profile" && <UpdateProfile />}
+          {selectedPage === "Explore" && <Explore />}
+        </div>
       </main>
       
     </div>
