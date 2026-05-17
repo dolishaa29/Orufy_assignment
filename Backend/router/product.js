@@ -5,7 +5,7 @@ let auth = require("../middleware/user");
 const upload = require("../middleware/multer"); 
 const cloudinary = require("../config/cloudinary");
 
-const {addproduct,viewproduct,editproduct,deleteproduct} = require("../controller/product");
+const {addproduct,viewproduct,editproduct,deleteproduct, explore, singleproductexplore} = require("../controller/product");
 const { singleproduct } = require("../service/product");
 
 
@@ -14,5 +14,7 @@ router.get("/viewproduct", auth, viewproduct);
 router.put("/editproduct/:id",auth,upload.single("image"),editproduct);
 router.delete("/deleteproduct/:id", auth, deleteproduct);
 router.get("/singleproduct/:id",auth,singleproduct);
+router.get('/explore',explore);
+router.get('/singleproductexplore',singleproductexplore);
 
 module.exports = router;
